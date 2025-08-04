@@ -78,7 +78,7 @@ Add to your Claude Desktop configuration:
 
 ```json
 {
-    "tools": {
+    "mcpServers": {
         "opencv": {
             "command": "uvx",
             "args": [
@@ -88,6 +88,17 @@ Add to your Claude Desktop configuration:
     }
 }
 ```
+
+Install uvx
+
+```bash
+brew install uv
+```
+
+Then restart Claude Desktop 
+
+<img width="1026" height="749" alt="image" src="https://github.com/user-attachments/assets/0355c5a0-92ea-4f5e-a299-4ee8ed9bccd2" />
+
 
 ### Basic Python Usage
 
