@@ -313,22 +313,31 @@ def detect_faces_tool(
         # Make a copy for drawing
         img_copy = img.copy()
         
-        # Get face cascade directory
-        cascade_path = cv2.data.haarcascades
-        haar_xml = os.path.join(cascade_path, 'haarcascade_frontalface_default.xml')
+        # Get face cascade directory - check OPENCV_DNN_MODELS_DIR first, then fallback to OpenCV default
+        model_dir = os.environ.get("OPENCV_DNN_MODELS_DIR", "models")
+        if not os.path.exists(model_dir):
+            os.makedirs(model_dir, exist_ok=True)
         
-        # Check if cascade file exists
+        # Try OPENCV_DNN_MODELS_DIR first
+        haar_xml = os.path.join(model_dir, 'haarcascade_frontalface_default.xml')
+        
+        # Fallback to OpenCV's default location if not found in model_dir
         if not os.path.exists(haar_xml):
-            download_instructions = (
-                f"Haar cascade file not found: {haar_xml}\n"
-                "To download the files:\n"
-                "1. Download from: https://github.com/opencv/opencv/tree/master/data/haarcascades\n"
-                "2. Save to the OpenCV data directory at: {}\n"
-                "   OR set the CV_HAAR_CASCADE_DIR environment variable to your preferred location\n"
-                "3. Restart the application".format(cascade_path)
-            )
-            logger.error(download_instructions)
-            raise FileNotFoundError(download_instructions)
+            cascade_path = cv2.data.haarcascades
+            haar_xml_fallback = os.path.join(cascade_path, 'haarcascade_frontalface_default.xml')
+            if os.path.exists(haar_xml_fallback):
+                haar_xml = haar_xml_fallback
+            else:
+                download_instructions = (
+                    f"Haar cascade file not found in {model_dir} or {cascade_path}.\n"
+                    "To download the files:\n"
+                    "1. Download from: https://github.com/opencv/opencv/tree/master/data/haarcascades\n"
+                    "2. Save to: {}\n"
+                    "   OR set the OPENCV_DNN_MODELS_DIR environment variable to your preferred directory\n"
+                    "3. Restart the application".format(model_dir)
+                )
+                logger.error(download_instructions)
+                raise FileNotFoundError(download_instructions)
         
         faces = []
         
