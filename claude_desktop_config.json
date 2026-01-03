@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "opencv-mcp-server": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hackerdogs/opencv-mcp-server:latest"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio",
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}
+

@@ -1,0 +1,222 @@
+{
+  "passed": [
+    "Resize URL 1: https://media.istockphoto.com/id/1480574526/photo/... (with base64)",
+    "Resize URL 2: https://digital-photography-school.com/wp-content/... (with base64)",
+    "Resize URL 3: https://live.staticflickr.com/2815/12382975864_2cd... (with base64)",
+    "Resize URL 4: https://signaturely.com/wp-content/uploads/2022/08... (with base64)",
+    "Resize URL 5: https://s3.us-west-1.wasabisys.com/idbwmedia.com/i... (with base64)",
+    "Resize URL 6: https://c8.alamy.com/comp/G39R54/handwriting-of-ph... (with base64)",
+    "Resize URL 7: https://i.pinimg.com/originals/ab/92/e0/ab92e0bc80... (with base64)",
+    "Resize URL 8: https://jvns.ca/images/flct.png... (with base64)",
+    "Edge detection URL 1: https://media.istockphoto.com/id/1480574526/photo/... (with base64)",
+    "Edge detection URL 2: https://digital-photography-school.com/wp-content/... (with base64)",
+    "Edge detection URL 3: https://live.staticflickr.com/2815/12382975864_2cd... (with base64)",
+    "Face detection URL 1: 5 faces found (with base64)",
+    "Face detection URL 2: 0 faces found (with base64)",
+    "Face detection URL 3: 0 faces found (with base64)",
+    "Image stats URL 1: 612x408 (with base64)",
+    "Image stats URL 2: 1200x628 (with base64)",
+    "Image stats URL 3: 1024x768 (with base64)",
+    "Image stats URL 4: 791x1024 (with base64)",
+    "Image stats URL 5: 745x577 (with base64)",
+    "Image stats URL 6: 1300x1149 (with base64)",
+    "Image stats URL 7: 1500x2100 (with base64)",
+    "Image stats URL 8: 1114x1224 (with base64)"
+  ],
+  "failed": [],
+  "skipped": [],
+  "details": {
+    "resize": {
+      "url_1": {
+        "url": "https://media.istockphoto.com/id/1480574526/photo/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park.jpg?s=612x612&w=0&k=20&c=iIzSiY2FK9mWTCmV8Ip8zpvXma7f1Qbd-UuKXNJodPg=",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park_resize_400x300_20260102_181131.jpg",
+        "base64_length": 85407,
+        "original_size": "612x408",
+        "output_size": "400x300",
+        "file_size": 64037
+      },
+      "url_2": {
+        "url": "https://digital-photography-school.com/wp-content/themes/sassy-dps/build/image13-large.jpeg",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/image13-large_resize_400x300_20260102_181132.jpeg",
+        "base64_length": 106539,
+        "original_size": "1200x628",
+        "output_size": "400x300",
+        "file_size": 79886
+      },
+      "url_3": {
+        "url": "https://live.staticflickr.com/2815/12382975864_2cd7755b03_b.jpg",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/12382975864_2cd7755b03_b_resize_400x300_20260102_181132.jpg",
+        "base64_length": 97375,
+        "original_size": "1024x768",
+        "output_size": "400x300",
+        "file_size": 73014
+      },
+      "url_4": {
+        "url": "https://signaturely.com/wp-content/uploads/2022/08/non-disclosure-agreement-uplead-791x1024.jpg",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/non-disclosure-agreement-uplead-791x1024_resize_400x300_20260102_181133.jpg",
+        "base64_length": 67311,
+        "original_size": "791x1024",
+        "output_size": "400x300",
+        "file_size": 50465
+      },
+      "url_5": {
+        "url": "https://s3.us-west-1.wasabisys.com/idbwmedia.com/images/2011/10/setupquideqrg.png",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/setupquideqrg_resize_400x300_20260102_181134.png",
+        "base64_length": 78443,
+        "original_size": "745x577",
+        "output_size": "400x300",
+        "file_size": 100901
+      },
+      "url_6": {
+        "url": "https://c8.alamy.com/comp/G39R54/handwriting-of-philosopher-john-locke-date-1632-1704-G39R54.jpg",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/handwriting-of-philosopher-john-locke-date-1632-1704-G39R54_resize_400x300_20260102_181135.jpg",
+        "base64_length": 82019,
+        "original_size": "1300x1149",
+        "output_size": "400x300",
+        "file_size": 61496
+      },
+      "url_7": {
+        "url": "https://i.pinimg.com/originals/ab/92/e0/ab92e0bc80aaa280f73bef31d099bf39.jpg",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/ab92e0bc80aaa280f73bef31d099bf39_resize_400x300_20260102_181136.jpg",
+        "base64_length": 107523,
+        "original_size": "1500x2100",
+        "output_size": "400x300",
+        "file_size": 80623
+      },
+      "url_8": {
+        "url": "https://jvns.ca/images/flct.png",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/flct_resize_400x300_20260102_181137.png",
+        "base64_length": 118955,
+        "original_size": "1114x1224",
+        "output_size": "400x300",
+        "file_size": 102589
+      }
+    },
+    "edge_detection": {
+      "url_1": {
+        "url": "https://media.istockphoto.com/id/1480574526/photo/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park.jpg?s=612x612&w=0&k=20&c=iIzSiY2FK9mWTCmV8Ip8zpvXma7f1Qbd-UuKXNJodPg=",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpj0a6v04x/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park_edges_canny_20260102_181137.jpg",
+        "base64_length": 223691,
+        "unique_values": 19,
+        "file_size": 167750
+      },
+      "url_2": {
+        "url": "https://digital-photography-school.com/wp-content/themes/sassy-dps/build/image13-large.jpeg",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpj0a6v04x/image13-large_edges_canny_20260102_181138.jpeg",
+        "base64_length": 838495,
+        "unique_values": 20,
+        "file_size": 628853
+      },
+      "url_3": {
+        "url": "https://live.staticflickr.com/2815/12382975864_2cd7755b03_b.jpg",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpj0a6v04x/12382975864_2cd7755b03_b_edges_canny_20260102_181140.jpg",
+        "base64_length": 726963,
+        "unique_values": 20,
+        "file_size": 545203
+      }
+    },
+    "face_detection": {
+      "url_1": {
+        "url": "https://media.istockphoto.com/id/1480574526/photo/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park.jpg?s=612x612&w=0&k=20&c=iIzSiY2FK9mWTCmV8Ip8zpvXma7f1Qbd-UuKXNJodPg=",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpqk2t6joy/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park_faces_haar_20260102_181143.jpg",
+        "base64_length": 136527,
+        "face_count": 5,
+        "file_size": 102377
+      },
+      "url_2": {
+        "url": "https://digital-photography-school.com/wp-content/themes/sassy-dps/build/image13-large.jpeg",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpqk2t6joy/image13-large_faces_haar_20260102_181143.jpeg",
+        "base64_length": 514331,
+        "face_count": 0,
+        "file_size": 385729
+      },
+      "url_3": {
+        "url": "https://live.staticflickr.com/2815/12382975864_2cd7755b03_b.jpg",
+        "status": "passed",
+        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpqk2t6joy/12382975864_2cd7755b03_b_faces_haar_20260102_181145.jpg",
+        "base64_length": 505435,
+        "face_count": 0,
+        "file_size": 379059
+      }
+    },
+    "image_stats": {
+      "url_1": {
+        "url": "https://media.istockphoto.com/id/1480574526/photo/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park.jpg?s=612x612&w=0&k=20&c=iIzSiY2FK9mWTCmV8Ip8zpvXma7f1Qbd-UuKXNJodPg=",
+        "status": "passed",
+        "dimensions": "612x408",
+        "base64_length": 132771,
+        "channels": 3,
+        "mean": 149.73675723012516
+      },
+      "url_2": {
+        "url": "https://digital-photography-school.com/wp-content/themes/sassy-dps/build/image13-large.jpeg",
+        "status": "passed",
+        "dimensions": "1200x628",
+        "base64_length": 514331,
+        "channels": 3,
+        "mean": 118.00607351380043
+      },
+      "url_3": {
+        "url": "https://live.staticflickr.com/2815/12382975864_2cd7755b03_b.jpg",
+        "status": "passed",
+        "dimensions": "1024x768",
+        "base64_length": 505435,
+        "channels": 3,
+        "mean": 120.97842237684462
+      },
+      "url_4": {
+        "url": "https://signaturely.com/wp-content/uploads/2022/08/non-disclosure-agreement-uplead-791x1024.jpg",
+        "status": "passed",
+        "dimensions": "791x1024",
+        "base64_length": 237827,
+        "channels": 3,
+        "mean": 236.74370563698378
+      },
+      "url_5": {
+        "url": "https://s3.us-west-1.wasabisys.com/idbwmedia.com/images/2011/10/setupquideqrg.png",
+        "status": "passed",
+        "dimensions": "745x577",
+        "base64_length": 230743,
+        "channels": 3,
+        "mean": 226.00499071413893
+      },
+      "url_6": {
+        "url": "https://c8.alamy.com/comp/G39R54/handwriting-of-philosopher-john-locke-date-1632-1704-G39R54.jpg",
+        "status": "passed",
+        "dimensions": "1300x1149",
+        "base64_length": 486363,
+        "channels": 3,
+        "mean": 209.47928321171142
+      },
+      "url_7": {
+        "url": "https://i.pinimg.com/originals/ab/92/e0/ab92e0bc80aaa280f73bef31d099bf39.jpg",
+        "status": "passed",
+        "dimensions": "1500x2100",
+        "base64_length": 1590339,
+        "channels": 3,
+        "mean": 219.52228677248678
+      },
+      "url_8": {
+        "url": "https://jvns.ca/images/flct.png",
+        "status": "passed",
+        "dimensions": "1114x1224",
+        "base64_length": 703347,
+        "channels": 3,
+        "mean": 230.88780274228182
+      }
+    }
+  }
+}

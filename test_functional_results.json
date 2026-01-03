@@ -1,0 +1,11 @@
+{
+  "passed": [
+    "Resize functional: Correctly resized to 400x300 with base64 output",
+    "Edge detection functional: Produced valid edge image",
+    "Face detection functional: Detected 5 faces with base64 output",
+    "Image stats functional: Valid statistics calculated",
+    "Filter functional: Applied Gaussian blur correctly with base64 output"
+  ],
+  "failed": [],
+  "skipped": []
+}

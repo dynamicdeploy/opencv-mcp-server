@@ -14,7 +14,7 @@ import subprocess
 import platform
 from typing import Optional, Dict, Any, List, Union
 # Import utility functions from utils
-from .utils import get_image_info, save_and_display, get_timestamp
+from .utils import get_image_info, save_and_display, get_timestamp, read_image, save_and_encode_image, encode_image_to_base64
 
 logger = logging.getLogger("opencv-mcp-server.image_basics")
 
@@ -24,31 +24,30 @@ def save_image_tool(path_in: str, path_out: str) -> Dict[str, Any]:
     Save an image to a file
     
     Args:
-        path_in: Path to input image
+        path_in: Path to input image or URL (supports http:// and https://)
         path_out: Output file path
         
     Returns:
         Dict: Status information
     """
-    # Read input image
-    img = cv2.imread(path_in)
-    if img is None:
-        raise ValueError(f"Failed to read image from path: {path_in}")
+    # Read input image (supports both local paths and URLs)
+    img = read_image(path_in)
     
     # Ensure directory exists
     directory = os.path.dirname(path_out)
     if directory and not os.path.exists(directory):
         os.makedirs(directory)
     
-    # Save and display
-    new_path = save_and_display(img, path_out, "save")
+    # Save and encode to base64
+    new_path, image_base64 = save_and_encode_image(img, path_out, "save")
     
     return {
         "success": True,
         "path": new_path,
         "size_bytes": os.path.getsize(new_path),
         "size_mb": round(os.path.getsize(new_path) / (1024 * 1024), 2),
-        "output_path": new_path  # Return path for chaining operations
+        "output_path": new_path,
+        "image_base64": image_base64  # Complete image data for LLM access
     }
 
 def convert_color_space_tool(image_path: str, source_space: str, target_space: str) -> Dict[str, Any]:
@@ -56,17 +55,15 @@ def convert_color_space_tool(image_path: str, source_space: str, target_space: s
     Convert image between color spaces
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         source_space: Source color space (BGR, RGB, GRAY, HSV, etc.)
         target_space: Target color space (BGR, RGB, GRAY, HSV, etc.)
         
     Returns:
         Dict: Converted image information and path
     """
-    # Read image from path
-    img = cv2.imread(image_path)
-    if img is None:
-        raise ValueError(f"Failed to read image from path: {image_path}")
+    # Read image from path or URL
+    img = read_image(image_path)
     
     # Map color space names to OpenCV constants
     color_space_map = {
@@ -111,15 +108,16 @@ def convert_color_space_tool(image_path: str, source_space: str, target_space: s
     if target_space != "BGR" and f"{target_space}_BGR" in color_space_map:
         display_img = cv2.cvtColor(converted, color_space_map[f"{target_space}_BGR"])
     
-    # Save and display
-    new_path = save_and_display(display_img, image_path, f"convert_{source_space}_to_{target_space}")
+    # Save and encode to base64
+    new_path, image_base64 = save_and_encode_image(display_img, image_path, f"convert_{source_space}_to_{target_space}")
     
     return {
         "source_space": source_space,
         "target_space": target_space,
         "info": get_image_info(converted),
         "path": new_path,
-        "output_path": new_path  # Return path for chaining operations
+        "output_path": new_path,
+        "image_base64": image_base64  # Complete image data for LLM access
     }
 
 def resize_image_tool(image_path: str, width: int, height: int, interpolation: str = "INTER_LINEAR") -> Dict[str, Any]:
@@ -127,7 +125,7 @@ def resize_image_tool(image_path: str, width: int, height: int, interpolation: s
     Resize an image to specific dimensions
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         width: Target width in pixels
         height: Target height in pixels
         interpolation: Interpolation method
@@ -135,10 +133,8 @@ def resize_image_tool(image_path: str, width: int, height: int, interpolation: s
     Returns:
         Dict: Resized image information and path
     """
-    # Read image from path
-    img = cv2.imread(image_path)
-    if img is None:
-        raise ValueError(f"Failed to read image from path: {image_path}")
+    # Read image from path or URL
+    img = read_image(image_path)
     
     # Map interpolation methods to OpenCV constants
     interp_methods = {
@@ -154,8 +150,8 @@ def resize_image_tool(image_path: str, width: int, height: int, interpolation: s
     # Perform the resize
     resized = cv2.resize(img, (width, height), interpolation=interp)
     
-    # Save and display
-    new_path = save_and_display(resized, image_path, f"resize_{width}x{height}")
+    # Save and encode to base64
+    new_path, image_base64 = save_and_encode_image(resized, image_path, f"resize_{width}x{height}")
     
     return {
         "width": width,
@@ -164,7 +160,8 @@ def resize_image_tool(image_path: str, width: int, height: int, interpolation: s
         "info": get_image_info(resized),
         "original_info": get_image_info(img),
         "path": new_path,
-        "output_path": new_path  # Return path for chaining operations
+        "output_path": new_path,
+        "image_base64": image_base64  # Complete image data for LLM access
     }
 
 def crop_image_tool(image_path: str, x: int, y: int, width: int, height: int) -> Dict[str, Any]:
@@ -172,7 +169,7 @@ def crop_image_tool(image_path: str, x: int, y: int, width: int, height: int) ->
     Crop a region from an image
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         x: X-coordinate of top-left corner
         y: Y-coordinate of top-left corner
         width: Width of crop region
@@ -181,10 +178,8 @@ def crop_image_tool(image_path: str, x: int, y: int, width: int, height: int) ->
     Returns:
         Dict: Cropped image information and path
     """
-    # Read image from path
-    img = cv2.imread(image_path)
-    if img is None:
-        raise ValueError(f"Failed to read image from path: {image_path}")
+    # Read image from path or URL
+    img = read_image(image_path)
     
     # Get image dimensions
     img_height, img_width = img.shape[:2]
@@ -196,8 +191,8 @@ def crop_image_tool(image_path: str, x: int, y: int, width: int, height: int) ->
     # Perform the crop
     cropped = img[y:y+height, x:x+width]
     
-    # Save and display
-    new_path = save_and_display(cropped, image_path, f"crop_{x}_{y}_{width}_{height}")
+    # Save and encode to base64
+    new_path, image_base64 = save_and_encode_image(cropped, image_path, f"crop_{x}_{y}_{width}_{height}")
     
     return {
         "x": x,
@@ -207,7 +202,8 @@ def crop_image_tool(image_path: str, x: int, y: int, width: int, height: int) ->
         "info": get_image_info(cropped),
         "original_info": get_image_info(img),
         "path": new_path,
-        "output_path": new_path  # Return path for chaining operations
+        "output_path": new_path,
+        "image_base64": image_base64  # Complete image data for LLM access
     }
 
 def get_image_stats_tool(image_path: str, channels: bool = True) -> Dict[str, Any]:
@@ -215,16 +211,14 @@ def get_image_stats_tool(image_path: str, channels: bool = True) -> Dict[str, An
     Get statistical information about an image
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         channels: Whether to calculate stats per channel
         
     Returns:
         Dict: Image statistics and paths
     """
-    # Read image from path
-    img = cv2.imread(image_path)
-    if img is None:
-        raise ValueError(f"Failed to read image from path: {image_path}")
+    # Read image from path or URL
+    img = read_image(image_path)
     
     # Calculate basic statistics
     info = get_image_info(img)
@@ -287,15 +281,18 @@ def get_image_stats_tool(image_path: str, channels: bool = True) -> Dict[str, An
                 pt2 = (2*x, 399 - int(normalized[x]))
                 cv2.line(hist_img, pt1, pt2, colors[i], 1)
     
-    # Save and display histogram
-    hist_path = save_and_display(hist_img, image_path, "histogram")
+    # Save and encode histogram image
+    hist_path, hist_base64 = save_and_encode_image(hist_img, image_path, "histogram")
     
-    # Display the original image as well
-    display_path = save_and_display(img, image_path, "stats")
+    # Save and encode original image
+    display_path, image_base64 = save_and_encode_image(img, image_path, "stats")
     
     stats["histogram_image_path"] = hist_path
+    stats["histogram_image_base64"] = hist_base64  # Histogram visualization
     stats["image_path"] = display_path
-    stats["output_path"] = display_path  # Return path for chaining operations
+    stats["image_base64"] = image_base64  # Original image data
+    stats["output_path"] = display_path
+    stats["output_image_base64"] = image_base64  # Complete image data for LLM access
     
     return stats
 

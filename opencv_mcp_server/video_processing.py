@@ -14,7 +14,7 @@ import tempfile
 from typing import Optional, List, Dict, Any, Tuple, Union
 
 # Import utility functions from utils
-from .utils import get_image_info, save_and_display, get_timestamp, get_video_output_folder, open_image_with_system_viewer
+from .utils import get_image_info, save_and_display, get_timestamp, get_video_output_folder, open_image_with_system_viewer, read_image, encode_video_to_base64, save_and_encode_image, encode_image_to_base64
 
 logger = logging.getLogger("opencv-mcp-server.video_processing")
 
@@ -213,12 +213,16 @@ def extract_video_frames_tool(
             
             cv2.imwrite(frame_path, frame)
             
+            # Encode frame to base64
+            frame_base64 = encode_image_to_base64(frame)
+            
             # Add to frames list
             frames.append({
                 "index": frame_idx,
                 "timestamp_seconds": float(frame_timestamp),
                 "timestamp_formatted": f"{int(frame_timestamp // 60):02d}:{int(frame_timestamp % 60):02d}.{int((frame_timestamp % 1) * 100):02d}",
-                "path": frame_path
+                "path": frame_path,
+                "image_base64": frame_base64  # Complete frame data for LLM access
             })
         
         # Release the capture
@@ -270,14 +274,9 @@ def detect_motion_tool(
         Dict: Motion detection results and visualizations
     """
     try:
-        # Read frames from paths
-        frame1 = cv2.imread(frame1_path)
-        if frame1 is None:
-            raise ValueError(f"Failed to read image from path: {frame1_path}")
-            
-        frame2 = cv2.imread(frame2_path)
-        if frame2 is None:
-            raise ValueError(f"Failed to read image from path: {frame2_path}")
+        # Read frames from paths or URLs
+        frame1 = read_image(frame1_path)
+        frame2 = read_image(frame2_path)
         
         # Create output directory in the same folder as frame2
         output_dir = os.path.dirname(frame2_path)
@@ -347,6 +346,10 @@ def detect_motion_tool(
         cv2.imwrite(diff_path, diff_visualization)
         cv2.imwrite(result_path, frame2_copy)
         
+        # Encode images to base64
+        diff_base64 = encode_image_to_base64(diff_visualization)
+        result_base64 = encode_image_to_base64(frame2_copy)
+        
         return {
             "motion_detected": len(motion_data) > 0,
             "motion_count": len(motion_data),
@@ -359,8 +362,10 @@ def detect_motion_tool(
                 "min_area": min_area
             },
             "diff_path": diff_path,
+            "diff_image_base64": diff_base64,  # Difference visualization
             "path": result_path,
-            "output_path": result_path  # Return path for chaining operations
+            "output_path": result_path,
+            "image_base64": result_base64  # Complete image data for LLM access
         }
         
     except Exception as e:
@@ -504,13 +509,18 @@ def track_object_tool(
             
             cv2.imwrite(frame_path, frame_vis)
             
+            # Encode frame to base64
+            from .utils import encode_image_to_base64
+            frame_base64 = encode_image_to_base64(frame_vis)
+            
             # Add frame data
             frame_timestamp = start_frame / video_info["fps"]
             extracted_frames.append({
                 "index": start_frame,
                 "timestamp_seconds": float(frame_timestamp),
                 "timestamp_formatted": f"{int(frame_timestamp // 60):02d}:{int(frame_timestamp % 60):02d}.{int((frame_timestamp % 1) * 100):02d}",
-                "path": frame_path
+                "path": frame_path,
+                "image_base64": frame_base64  # Complete frame data for LLM access
             })
         
         # Process subsequent frames
@@ -621,9 +631,7 @@ def combine_frames_to_video_tool(
             raise ValueError("No frames provided")
         
         # Get dimensions from first frame if not specified
-        first_frame = cv2.imread(frame_paths[0])
-        if first_frame is None:
-            raise ValueError(f"Failed to read first frame from path: {frame_paths[0]}")
+        first_frame = read_image(frame_paths[0])
         
         if width is None or height is None:
             h, w = first_frame.shape[:2]
@@ -644,10 +652,11 @@ def combine_frames_to_video_tool(
         
         # Process each frame
         for i, frame_path in enumerate(frame_paths):
-            # Read frame
-            frame = cv2.imread(frame_path)
-            if frame is None:
-                logger.warning(f"Failed to read frame from path: {frame_path}")
+            # Read frame (supports URLs)
+            try:
+                frame = read_image(frame_path)
+            except Exception as e:
+                logger.warning(f"Failed to read frame from path: {frame_path}: {str(e)}")
                 continue
             
             # Resize if necessary
@@ -660,9 +669,13 @@ def combine_frames_to_video_tool(
         # Release writer
         out.release()
         
+        # Encode video to base64
+        video_base64 = encode_video_to_base64(output_path)
+        
         return {
             "success": True,
             "output_path": output_path,
+            "video_base64": video_base64,  # Complete video data for LLM access
             "frame_count": len(frame_paths),
             "video_parameters": {
                 "width": width,
@@ -785,9 +798,13 @@ def create_mp4_from_video_tool(
         # Open the video with system's default player
         open_video_with_system_viewer(output_path)
             
+        # Encode video to base64
+        video_base64 = encode_video_to_base64(output_path)
+        
         return {
             "success": True,
             "output_path": output_path,
+            "video_base64": video_base64,  # Complete video data for LLM access
             "input_path": video_path,
             "frame_count": frame_count,
             "video_parameters": {
@@ -1100,10 +1117,14 @@ def detect_video_objects_tool(
         # Open the output video with system's default player
         open_video_with_system_viewer(output_path)
         
+        # Encode video to base64
+        video_base64 = encode_video_to_base64(output_path)
+        
         # Return results
         return {
             "success": True,
             "output_path": output_path,
+            "video_base64": video_base64,  # Complete video data for LLM access
             "input_path": video_path,
             "processed_frames": processed_count,
             "detection_counts": detection_counts,
@@ -1411,10 +1432,14 @@ def detect_camera_objects_tool(
         # Open the output video with system's default player
         open_video_with_system_viewer(output_path)
         
+        # Encode video to base64
+        video_base64 = encode_video_to_base64(output_path)
+        
         # Return results
         return {
             "success": True,
             "output_path": output_path,
+            "video_base64": video_base64,  # Complete video data for LLM access
             "frames_captured": frame_count,
             "detection_counts": detection_counts,
             "total_detections": sum(detection_counts.values()),

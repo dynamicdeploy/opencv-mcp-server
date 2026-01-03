@@ -1,0 +1,10 @@
+{
+  "passed": [
+    "Pulled image from Docker Hub: hackerdogs/opencv-mcp-server:latest",
+    "List tools: 22 tools",
+    "get_image_stats_tool: Works",
+    "resize_image_tool: Works correctly"
+  ],
+  "failed": [],
+  "skipped": []
+}

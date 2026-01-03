@@ -1,0 +1,11 @@
+{
+  "passed": [
+    "MCP server local: 22 tools available",
+    "MCP server local: get_image_stats_tool works",
+    "MCP server local: resize_image_tool works",
+    "MCP server Docker: 22 tools available",
+    "MCP server Docker: get_image_stats_tool works"
+  ],
+  "failed": [],
+  "skipped": []
+}

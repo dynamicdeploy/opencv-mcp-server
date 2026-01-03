@@ -1,0 +1,11 @@
+{
+  "passed": [
+    "List tools: 22 tools",
+    "get_image_stats_tool: Works correctly",
+    "resize_image_tool: Works correctly",
+    "detect_edges_tool: Works correctly",
+    "detect_faces_tool: Found 5 faces"
+  ],
+  "failed": [],
+  "skipped": []
+}

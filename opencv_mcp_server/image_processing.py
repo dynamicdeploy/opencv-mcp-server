@@ -13,7 +13,7 @@ import logging
 from typing import Optional, List, Dict, Any, Tuple, Union
 
 # Import utility functions from utils
-from .utils import get_image_info, save_and_display, get_timestamp
+from .utils import get_image_info, save_and_display, get_timestamp, read_image, save_and_encode_image
 
 logger = logging.getLogger("opencv-mcp-server.image_processing")
 
@@ -30,7 +30,7 @@ def apply_filter_tool(
     Apply various filters to an image
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         filter_type: Type of filter ('blur', 'gaussian', 'median', 'bilateral')
         kernel_size: Size of the kernel, should be odd (e.g., 3, 5, 7)
         sigma: Standard deviation for Gaussian filter
@@ -41,10 +41,8 @@ def apply_filter_tool(
         Dict: Filtered image and filter information
     """
     try:
-        # Read image from path
-        img = cv2.imread(image_path)
-        if img is None:
-            raise ValueError(f"Failed to read image from path: {image_path}")
+        # Read image from path or URL
+        img = read_image(image_path)
         
         # Ensure kernel size is odd
         if isinstance(kernel_size, int):
@@ -85,14 +83,15 @@ def apply_filter_tool(
         else:
             raise ValueError(f"Unsupported filter type: {filter_type}")
         
-        # Save and display
-        new_path = save_and_display(result, image_path, f"filter_{filter_type}")
+        # Save and encode to base64
+        new_path, image_base64 = save_and_encode_image(result, image_path, f"filter_{filter_type}")
         
         return {
             "filter": filter_info,
             "info": get_image_info(result),
             "path": new_path,
-            "output_path": new_path  # Return path for chaining operations
+            "output_path": new_path,
+            "image_base64": image_base64  # Complete image data for LLM access
         }
         
     except Exception as e:
@@ -114,7 +113,7 @@ def detect_edges_tool(
     Detect edges in an image
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://) or URL (supports http:// and https://)
         method: Edge detection method ('canny', 'sobel', 'laplacian', 'scharr')
         threshold1: First threshold for Canny detector
         threshold2: Second threshold for Canny detector
@@ -128,10 +127,8 @@ def detect_edges_tool(
         Dict: Edge-detected image and method information
     """
     try:
-        # Read image from path
-        img = cv2.imread(image_path)
-        if img is None:
-            raise ValueError(f"Failed to read image from path: {image_path}")
+        # Read image from path or URL
+        img = read_image(image_path)
         
         # Convert to grayscale if needed
         if len(img.shape) == 3:
@@ -200,14 +197,15 @@ def detect_edges_tool(
         else:
             raise ValueError(f"Unsupported edge detection method: {method}")
         
-        # Save and display
-        new_path = save_and_display(edges, image_path, f"edges_{method}")
+        # Save and encode to base64
+        new_path, image_base64 = save_and_encode_image(edges, image_path, f"edges_{method}")
         
         return {
             "method_info": method_info,
             "info": get_image_info(edges),
             "path": new_path,
-            "output_path": new_path  # Return path for chaining operations
+            "output_path": new_path,
+            "image_base64": image_base64  # Complete image data for LLM access
         }
         
     except Exception as e:
@@ -227,7 +225,7 @@ def apply_threshold_tool(
     Apply threshold to an image
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         threshold_type: Type of thresholding ('binary', 'binary_inv', 'trunc', 'tozero', 'tozero_inv', 'adaptive')
         threshold_value: Threshold value for global thresholding
         max_value: Maximum value to use with the THRESH_BINARY and THRESH_BINARY_INV types
@@ -239,10 +237,8 @@ def apply_threshold_tool(
         Dict: Thresholded image and threshold information
     """
     try:
-        # Read image from path
-        img = cv2.imread(image_path)
-        if img is None:
-            raise ValueError(f"Failed to read image from path: {image_path}")
+        # Read image from path or URL
+        img = read_image(image_path)
         
         # Convert to grayscale if needed
         if len(img.shape) == 3:
@@ -308,14 +304,15 @@ def apply_threshold_tool(
                 "max_value": max_value
             })
         
-        # Save and display
-        new_path = save_and_display(result, image_path, f"threshold_{threshold_type}")
+        # Save and encode to base64
+        new_path, image_base64 = save_and_encode_image(result, image_path, f"threshold_{threshold_type}")
         
         return {
             "threshold_info": threshold_info,
             "info": get_image_info(result),
             "path": new_path,
-            "output_path": new_path  # Return path for chaining operations
+            "output_path": new_path,
+            "image_base64": image_base64  # Complete image data for LLM access
         }
         
     except Exception as e:
@@ -335,7 +332,7 @@ def detect_contours_tool(
     Detect and optionally draw contours in an image
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         mode: Contour retrieval mode ('external', 'list', 'ccomp', 'tree')
         method: Contour approximation method ('none', 'simple', 'tc89_l1', 'tc89_kcos')
         draw: Whether to draw the contours on the image
@@ -347,10 +344,8 @@ def detect_contours_tool(
         Dict: Image with contours and contour information
     """
     try:
-        # Read image from path
-        img = cv2.imread(image_path)
-        if img is None:
-            raise ValueError(f"Failed to read image from path: {image_path}")
+        # Read image from path or URL
+        img = read_image(image_path)
         
         # Make a copy for drawing
         img_copy = img.copy()
@@ -418,11 +413,11 @@ def detect_contours_tool(
         if draw:
             cv2.drawContours(img_copy, contours, -1, color, thickness)
         
-        # Save result image
-        result_path = save_and_display(img_copy, image_path, f"contours_{mode}_{method}")
+        # Save and encode result image
+        result_path, image_base64 = save_and_encode_image(img_copy, image_path, f"contours_{mode}_{method}")
         
-        # Save binary image for reference
-        binary_path = save_and_display(binary, image_path, f"binary_for_contours")
+        # Save and encode binary image for reference
+        binary_path, binary_base64 = save_and_encode_image(binary, image_path, f"binary_for_contours")
         
         return {
             "contour_count": len(contours),
@@ -433,8 +428,10 @@ def detect_contours_tool(
                 "threshold_value": threshold_value
             },
             "binary_path": binary_path,
+            "binary_image_base64": binary_base64,  # Binary image data
             "path": result_path,
-            "output_path": result_path,  # Return path for chaining operations
+            "output_path": result_path,
+            "image_base64": image_base64,  # Complete image data for LLM access
             "info": get_image_info(img_copy)
         }
         
@@ -461,7 +458,7 @@ def find_shapes_tool(
     Find basic shapes in an image
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         shape_type: Type of shape to find ('circles', 'lines', 'lines_p')
         param1: First method-specific parameter (depends on shape_type)
         param2: Second method-specific parameter (depends on shape_type)
@@ -479,10 +476,8 @@ def find_shapes_tool(
         Dict: Image with shapes and shape information
     """
     try:
-        # Read image from path
-        img = cv2.imread(image_path)
-        if img is None:
-            raise ValueError(f"Failed to read image from path: {image_path}")
+        # Read image from path or URL
+        img = read_image(image_path)
         
         # Make a copy for drawing
         img_copy = img.copy()
@@ -620,15 +615,16 @@ def find_shapes_tool(
         else:
             raise ValueError(f"Unsupported shape type: {shape_type}")
         
-        # Save the result
-        result_path = save_and_display(img_copy, image_path, f"shapes_{shape_type}")
+        # Save and encode to base64
+        result_path, image_base64 = save_and_encode_image(img_copy, image_path, f"shapes_{shape_type}")
         
         return {
             "shape_count": len(shapes_data),
             "shapes": shapes_data,
             "shape_parameters": shape_info,
             "path": result_path,
-            "output_path": result_path,  # Return path for chaining operations
+            "output_path": result_path,
+            "image_base64": image_base64,  # Complete image data for LLM access
             "info": get_image_info(img_copy)
         }
         
@@ -649,8 +645,8 @@ def match_template_tool(
     Find a template in an image
     
     Args:
-        image_path: Path to the source image file
-        template_path: Path to the template image file
+        image_path: Path to the source image file or URL (supports http:// and https://)
+        template_path: Path to the template image file or URL (supports http:// and https://)
         method: Template matching method
         threshold: Threshold for good matches
         draw: Whether to draw rectangle around matches
@@ -661,14 +657,9 @@ def match_template_tool(
         Dict: Image with matches and match information
     """
     try:
-        # Read images from paths
-        img = cv2.imread(image_path)
-        if img is None:
-            raise ValueError(f"Failed to read image from path: {image_path}")
-            
-        template = cv2.imread(template_path)
-        if template is None:
-            raise ValueError(f"Failed to read template from path: {template_path}")
+        # Read images from paths or URLs
+        img = read_image(image_path)
+        template = read_image(template_path)
         
         # Make a copy for drawing
         img_copy = img.copy()
@@ -780,9 +771,9 @@ def match_template_tool(
         # Visualize result matrix
         result_norm = cv2.normalize(result, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
         
-        # Save results
-        matches_path = save_and_display(img_copy, image_path, f"template_matches_{method}")
-        visualization_path = save_and_display(result_norm, image_path, f"template_heatmap_{method}")
+        # Save and encode results
+        matches_path, matches_base64 = save_and_encode_image(img_copy, image_path, f"template_matches_{method}")
+        visualization_path, heatmap_base64 = save_and_encode_image(result_norm, image_path, f"template_heatmap_{method}")
         
         return {
             "match_count": len(match_data),
@@ -793,8 +784,10 @@ def match_template_tool(
                 "is_min_method": is_min
             },
             "visualization_path": visualization_path,
+            "visualization_image_base64": heatmap_base64,  # Heatmap visualization
             "path": matches_path,
-            "output_path": matches_path,  # Return path for chaining operations
+            "output_path": matches_path,
+            "image_base64": matches_base64,  # Complete image data for LLM access
             "info": get_image_info(img_copy),
             "template_info": get_image_info(template)
         }

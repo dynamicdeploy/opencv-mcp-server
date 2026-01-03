@@ -13,7 +13,7 @@ import logging
 from typing import Optional, List, Dict, Any, Tuple, Union
 
 # Import utility functions from utils
-from .utils import get_image_info, save_and_display, get_timestamp
+from .utils import get_image_info, save_and_display, get_timestamp, read_image, save_and_encode_image
 
 logger = logging.getLogger("opencv-mcp-server.computer_vision")
 
@@ -29,7 +29,7 @@ def detect_features_tool(
     Detect features in an image
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         method: Feature detection method ('sift', 'orb', 'brisk', 'akaze')
         max_features: Maximum number of features to detect
         draw: Whether to draw keypoints on the image
@@ -39,10 +39,8 @@ def detect_features_tool(
         Dict: Image with keypoints and feature information
     """
     try:
-        # Read image from path
-        img = cv2.imread(image_path)
-        if img is None:
-            raise ValueError(f"Failed to read image from path: {image_path}")
+        # Read image from path or URL
+        img = read_image(image_path)
         
         # Convert to grayscale if needed
         if len(img.shape) == 3:
@@ -91,7 +89,7 @@ def detect_features_tool(
             })
         
         # Save and display
-        new_path = save_and_display(img_keypoints, image_path, f"features_{method}")
+        new_path, image_base64 = save_and_encode_image(img_keypoints, image_path, f"features_{method}")
         
         return {
             "keypoint_count": len(keypoints),
@@ -99,7 +97,8 @@ def detect_features_tool(
             "method": method,
             "info": get_image_info(img_keypoints),
             "path": new_path,
-            "output_path": new_path  # Return path for chaining operations
+            "output_path": new_path,
+            "image_base64": image_base64  # Complete image data for LLM access
         }
         
     except Exception as e:
@@ -119,8 +118,8 @@ def match_features_tool(
     Match features between two images
     
     Args:
-        image1_path: Path to the first image file
-        image2_path: Path to the second image file
+        image1_path: Path to the first image file or URL (supports http:// and https://)
+        image2_path: Path to the second image file or URL (supports http:// and https://)
         method: Feature detection method ('sift', 'orb', 'brisk', 'akaze')
         matcher: Matcher type ('bf' for BFMatcher, 'flann' for FlannBasedMatcher)
         max_features: Maximum number of features to detect
@@ -131,14 +130,9 @@ def match_features_tool(
         Dict: Image with matches and match information
     """
     try:
-        # Read images from paths
-        img1 = cv2.imread(image1_path)
-        if img1 is None:
-            raise ValueError(f"Failed to read image from path: {image1_path}")
-            
-        img2 = cv2.imread(image2_path)
-        if img2 is None:
-            raise ValueError(f"Failed to read image from path: {image2_path}")
+        # Read images from paths or URLs
+        img1 = read_image(image1_path)
+        img2 = read_image(image2_path)
         
         # Convert to grayscale if needed
         if len(img1.shape) == 3:
@@ -261,8 +255,8 @@ def match_features_tool(
         name_parts1 = os.path.splitext(base_name1)
         directory = os.path.dirname(image1_path) or '.'
         
-        # Save and display
-        result_path = save_and_display(img_matches, image1_path, f"matches_{method}_{name_parts1[0]}_to_{os.path.splitext(base_name2)[0]}")
+        # Save and encode to base64
+        result_path, image_base64 = save_and_encode_image(img_matches, image1_path, f"matches_{method}_{name_parts1[0]}_to_{os.path.splitext(base_name2)[0]}")
         
         return {
             "match_count": len(good_matches),
@@ -276,7 +270,8 @@ def match_features_tool(
             },
             "info": get_image_info(img_matches),
             "path": result_path,
-            "output_path": result_path  # Return path for chaining operations
+            "output_path": result_path,
+            "image_base64": image_base64  # Complete image data for LLM access
         }
         
     except Exception as e:
@@ -298,7 +293,7 @@ def detect_faces_tool(
     Detect faces in an image
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         method: Face detection method ('haar', 'dnn')
         scale_factor: Scale factor for cascade classifier
         min_neighbors: Minimum neighbors for cascade classifier
@@ -312,10 +307,8 @@ def detect_faces_tool(
         Dict: Image with faces and face information
     """
     try:
-        # Read image from path
-        img = cv2.imread(image_path)
-        if img is None:
-            raise ValueError(f"Failed to read image from path: {image_path}")
+        # Read image from path or URL
+        img = read_image(image_path)
         
         # Make a copy for drawing
         img_copy = img.copy()
@@ -472,8 +465,8 @@ def detect_faces_tool(
         else:
             raise ValueError(f"Unsupported face detection method: {method}")
         
-        # Save and display
-        result_path = save_and_display(img_copy, image_path, f"faces_{method}")
+        # Save and encode to base64
+        result_path, image_base64 = save_and_encode_image(img_copy, image_path, f"faces_{method}")
         
         return {
             "face_count": len(faces),
@@ -481,7 +474,8 @@ def detect_faces_tool(
             "method": method,
             "info": get_image_info(img_copy),
             "path": result_path,
-            "output_path": result_path  # Return path for chaining operations
+            "output_path": result_path,
+            "image_base64": image_base64  # Complete image data for LLM access
         }
         
     except Exception as e:
@@ -505,7 +499,7 @@ def detect_objects_tool(
     Detect objects using pre-trained DNN models
     
     Args:
-        image_path: Path to the image file
+        image_path: Path to the image file or URL (supports http:// and https://)
         model_path: Path to model weights file (e.g., yolo.weights)
         config_path: Path to model configuration file (e.g., yolo.cfg)
         classes_path: Path to text file containing class names
@@ -521,10 +515,8 @@ def detect_objects_tool(
         Dict: Image with objects and object information
     """
     try:
-        # Read image from path
-        img = cv2.imread(image_path)
-        if img is None:
-            raise ValueError(f"Failed to read image from path: {image_path}")
+        # Read image from path or URL
+        img = read_image(image_path)
         
         # Make a copy for drawing
         img_copy = img.copy()
@@ -701,8 +693,8 @@ def detect_objects_tool(
                     cv2.putText(img_copy, text, (x, y_text),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
         
-        # Save and display
-        result_path = save_and_display(img_copy, image_path, "objects_detected")
+        # Save and encode to base64
+        result_path, image_base64 = save_and_encode_image(img_copy, image_path, "objects_detected")
         
         return {
             "object_count": len(objects),
@@ -715,7 +707,8 @@ def detect_objects_tool(
             },
             "info": get_image_info(img_copy),
             "path": result_path,
-            "output_path": result_path  # Return path for chaining operations
+            "output_path": result_path,
+            "image_base64": image_base64  # Complete image data for LLM access
         }
         
     except Exception as e:

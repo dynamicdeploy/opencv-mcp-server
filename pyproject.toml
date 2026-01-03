@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "opencv-mcp-server"
-version = "0.1.2"
+version = "0.1.4"
 authors = [
     {name = "GongRzhe", email = "gongrzhe@gmail.com"},
 ]
@@ -18,8 +18,9 @@ classifiers = [
 ]
 dependencies = [
     "opencv-contrib-python>=4.12.0.88",
-    "numpy>2.2.6",
+    "numpy>=2.0.0,<2.3.0",
     "mcp>=1.13.1",
+    "requests>=2.31.0",
 ]
 
 [project.urls]

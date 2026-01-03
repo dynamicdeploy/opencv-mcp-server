@@ -1,0 +1,20 @@
+{
+  "passed": [
+    "URL detection: https://example.com/image.jpg",
+    "URL detection: http://example.com/image.png",
+    "URL detection: /local/path/image.jpg",
+    "URL detection: image.jpg",
+    "Read image from URL: https://media.istockphoto.com/id/1480574526/photo/...",
+    "Read image from URL: https://digital-photography-school.com/wp-content/...",
+    "Read image from URL: https://live.staticflickr.com/2815/12382975864_2cd...",
+    "Resize from URL: https://media.istockphoto.com/id/1480574526/photo/...",
+    "Edge detection from URL: https://media.istockphoto.com/id/1480574526/photo/...",
+    "Face detection from URL: https://media.istockphoto.com/id/1480574526/photo/...",
+    "Image stats from URL: https://media.istockphoto.com/id/1480574526/photo/...",
+    "Filter from URL: https://media.istockphoto.com/id/1480574526/photo/..."
+  ],
+  "failed": [
+    "URL detection: file:///local/path/image.jpg (expected True, got False)"
+  ],
+  "skipped": []
+}
