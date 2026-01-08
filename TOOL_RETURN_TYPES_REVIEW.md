@@ -256,3 +256,4 @@ The current implementation returns **metadata and file paths** but **not file co
 
 **Recommendation**: Implement optional base64 encoding for images to make processed results accessible to LLMs.
 
+

@@ -188,3 +188,4 @@ echo "    \"args\": [\"run\", \"-i\", \"--rm\", \"${FULL_IMAGE_NAME}\"]"
 echo "  }"
 echo ""
 
+

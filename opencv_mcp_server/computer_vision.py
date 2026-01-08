@@ -663,8 +663,11 @@ def detect_objects_tool(
             # Process each selected box
             for i in indices:
                 # Extract bounding box coordinates
-                # In some versions this may be i[0] instead of just i
-                idx = i if isinstance(i, int) else i[0]
+                # Handle different OpenCV versions - indices can be int, array, or tuple
+                if isinstance(i, (list, tuple, np.ndarray)):
+                    idx = int(i[0]) if len(i) > 0 else int(i)
+                else:
+                    idx = int(i)
                 
                 box = boxes[idx]
                 x, y, w, h = box

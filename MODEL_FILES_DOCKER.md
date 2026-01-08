@@ -95,3 +95,4 @@ docker run --rm opencv-mcp-server:0.1.4 \
 
 All 5 model files should be listed.
 
+

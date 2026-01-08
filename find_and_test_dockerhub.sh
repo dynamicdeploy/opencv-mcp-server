@@ -70,3 +70,4 @@ else
     docker run --rm ${FOUND_IMAGE} python -c "import opencv_mcp_server; print('✓ OK')"
 fi
 
+

@@ -147,3 +147,4 @@ Supported formats:
 
 **All 22 image processing tools support URLs automatically!** Just pass a URL instead of a file path to any tool's `image_path` parameter, and the server will handle downloading and processing seamlessly.
 
+

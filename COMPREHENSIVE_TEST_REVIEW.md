@@ -157,3 +157,4 @@ All URLs from `image_urls.txt` were tested:
 
 The OpenCV MCP Server correctly processes images from URLs and produces valid, verifiable output files with correct dimensions, quality, and content.
 
+

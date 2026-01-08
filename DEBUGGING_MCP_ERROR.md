@@ -146,3 +146,4 @@ The OpenCV MCP server configuration is **correct**:
 
 The issue is with a **different MCP server** (likely OCR) that has the wrong configuration.
 
+

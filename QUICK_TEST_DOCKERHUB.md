@@ -65,3 +65,4 @@ The test infrastructure is ready. To test a published image:
 - Check network connectivity
 - Verify image name: `<username>/opencv-mcp-server:latest`
 
+

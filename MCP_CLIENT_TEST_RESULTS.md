@@ -198,3 +198,4 @@ For use with MCP clients (like Claude Desktop):
 
 The OpenCV MCP Server is fully functional as an MCP server and can be used with any MCP-compatible client, including via Docker exec.
 
+

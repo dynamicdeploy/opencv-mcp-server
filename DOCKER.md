@@ -163,3 +163,4 @@ Check that:
 - The image format is supported (JPEG, PNG, GIF, WebP)
 - Network connectivity is available in the container
 
+
