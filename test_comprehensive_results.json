@@ -30,7 +30,7 @@
       "url_1": {
         "url": "https://media.istockphoto.com/id/1480574526/photo/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park.jpg?s=612x612&w=0&k=20&c=iIzSiY2FK9mWTCmV8Ip8zpvXma7f1Qbd-UuKXNJodPg=",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park_resize_400x300_20260102_181131.jpg",
+        "output_path": "/tmp/tmpsrpvaup0/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park_resize_400x300_20260108_080445.jpg",
         "base64_length": 85407,
         "original_size": "612x408",
         "output_size": "400x300",
@@ -39,7 +39,7 @@
       "url_2": {
         "url": "https://digital-photography-school.com/wp-content/themes/sassy-dps/build/image13-large.jpeg",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/image13-large_resize_400x300_20260102_181132.jpeg",
+        "output_path": "/tmp/tmpsrpvaup0/image13-large_resize_400x300_20260108_080446.jpeg",
         "base64_length": 106539,
         "original_size": "1200x628",
         "output_size": "400x300",
@@ -48,7 +48,7 @@
       "url_3": {
         "url": "https://live.staticflickr.com/2815/12382975864_2cd7755b03_b.jpg",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/12382975864_2cd7755b03_b_resize_400x300_20260102_181132.jpg",
+        "output_path": "/tmp/tmpsrpvaup0/12382975864_2cd7755b03_b_resize_400x300_20260108_080446.jpg",
         "base64_length": 97375,
         "original_size": "1024x768",
         "output_size": "400x300",
@@ -57,7 +57,7 @@
       "url_4": {
         "url": "https://signaturely.com/wp-content/uploads/2022/08/non-disclosure-agreement-uplead-791x1024.jpg",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/non-disclosure-agreement-uplead-791x1024_resize_400x300_20260102_181133.jpg",
+        "output_path": "/tmp/tmpsrpvaup0/non-disclosure-agreement-uplead-791x1024_resize_400x300_20260108_080447.jpg",
         "base64_length": 67311,
         "original_size": "791x1024",
         "output_size": "400x300",
@@ -66,7 +66,7 @@
       "url_5": {
         "url": "https://s3.us-west-1.wasabisys.com/idbwmedia.com/images/2011/10/setupquideqrg.png",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/setupquideqrg_resize_400x300_20260102_181134.png",
+        "output_path": "/tmp/tmpsrpvaup0/setupquideqrg_resize_400x300_20260108_080447.png",
         "base64_length": 78443,
         "original_size": "745x577",
         "output_size": "400x300",
@@ -75,7 +75,7 @@
       "url_6": {
         "url": "https://c8.alamy.com/comp/G39R54/handwriting-of-philosopher-john-locke-date-1632-1704-G39R54.jpg",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/handwriting-of-philosopher-john-locke-date-1632-1704-G39R54_resize_400x300_20260102_181135.jpg",
+        "output_path": "/tmp/tmpsrpvaup0/handwriting-of-philosopher-john-locke-date-1632-1704-G39R54_resize_400x300_20260108_080448.jpg",
         "base64_length": 82019,
         "original_size": "1300x1149",
         "output_size": "400x300",
@@ -84,7 +84,7 @@
       "url_7": {
         "url": "https://i.pinimg.com/originals/ab/92/e0/ab92e0bc80aaa280f73bef31d099bf39.jpg",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/ab92e0bc80aaa280f73bef31d099bf39_resize_400x300_20260102_181136.jpg",
+        "output_path": "/tmp/tmpsrpvaup0/ab92e0bc80aaa280f73bef31d099bf39_resize_400x300_20260108_080449.jpg",
         "base64_length": 107523,
         "original_size": "1500x2100",
         "output_size": "400x300",
@@ -93,7 +93,7 @@
       "url_8": {
         "url": "https://jvns.ca/images/flct.png",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpfqfsapjz/flct_resize_400x300_20260102_181137.png",
+        "output_path": "/tmp/tmpsrpvaup0/flct_resize_400x300_20260108_080450.png",
         "base64_length": 118955,
         "original_size": "1114x1224",
         "output_size": "400x300",
@@ -104,7 +104,7 @@
       "url_1": {
         "url": "https://media.istockphoto.com/id/1480574526/photo/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park.jpg?s=612x612&w=0&k=20&c=iIzSiY2FK9mWTCmV8Ip8zpvXma7f1Qbd-UuKXNJodPg=",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpj0a6v04x/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park_edges_canny_20260102_181137.jpg",
+        "output_path": "/tmp/tmpj5cvhxew/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park_edges_canny_20260108_080450.jpg",
         "base64_length": 223691,
         "unique_values": 19,
         "file_size": 167750
@@ -112,7 +112,7 @@
       "url_2": {
         "url": "https://digital-photography-school.com/wp-content/themes/sassy-dps/build/image13-large.jpeg",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpj0a6v04x/image13-large_edges_canny_20260102_181138.jpeg",
+        "output_path": "/tmp/tmpj5cvhxew/image13-large_edges_canny_20260108_080451.jpeg",
         "base64_length": 838495,
         "unique_values": 20,
         "file_size": 628853
@@ -120,7 +120,7 @@
       "url_3": {
         "url": "https://live.staticflickr.com/2815/12382975864_2cd7755b03_b.jpg",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpj0a6v04x/12382975864_2cd7755b03_b_edges_canny_20260102_181140.jpg",
+        "output_path": "/tmp/tmpj5cvhxew/12382975864_2cd7755b03_b_edges_canny_20260108_080453.jpg",
         "base64_length": 726963,
         "unique_values": 20,
         "file_size": 545203
@@ -130,7 +130,7 @@
       "url_1": {
         "url": "https://media.istockphoto.com/id/1480574526/photo/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park.jpg?s=612x612&w=0&k=20&c=iIzSiY2FK9mWTCmV8Ip8zpvXma7f1Qbd-UuKXNJodPg=",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpqk2t6joy/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park_faces_haar_20260102_181143.jpg",
+        "output_path": "/tmp/tmpr3v5dgp7/happy-multigenerational-people-having-fun-sitting-on-grass-in-a-public-park_faces_haar_20260108_080455.jpg",
         "base64_length": 136527,
         "face_count": 5,
         "file_size": 102377
@@ -138,7 +138,7 @@
       "url_2": {
         "url": "https://digital-photography-school.com/wp-content/themes/sassy-dps/build/image13-large.jpeg",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpqk2t6joy/image13-large_faces_haar_20260102_181143.jpeg",
+        "output_path": "/tmp/tmpr3v5dgp7/image13-large_faces_haar_20260108_080455.jpeg",
         "base64_length": 514331,
         "face_count": 0,
         "file_size": 385729
@@ -146,7 +146,7 @@
       "url_3": {
         "url": "https://live.staticflickr.com/2815/12382975864_2cd7755b03_b.jpg",
         "status": "passed",
-        "output_path": "/private/var/folders/1s/wxp1_yb10m1bwszz1sf1yckr0000gn/T/tmpqk2t6joy/12382975864_2cd7755b03_b_faces_haar_20260102_181145.jpg",
+        "output_path": "/tmp/tmpr3v5dgp7/12382975864_2cd7755b03_b_faces_haar_20260108_080457.jpg",
         "base64_length": 505435,
         "face_count": 0,
         "file_size": 379059
