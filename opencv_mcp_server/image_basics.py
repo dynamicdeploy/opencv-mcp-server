@@ -65,48 +65,70 @@ def convert_color_space_tool(image_path: str, source_space: str, target_space: s
     # Read image from path or URL
     img = read_image(image_path)
     
-    # Map color space names to OpenCV constants
-    color_space_map = {
-        "BGR": cv2.COLOR_BGR2BGR,  # Identity
+    # OpenCV reads images in BGR format by default
+    # Map color space names to OpenCV constants (from BGR)
+    bgr_to_other = {
         "RGB": cv2.COLOR_BGR2RGB,
         "GRAY": cv2.COLOR_BGR2GRAY,
         "HSV": cv2.COLOR_BGR2HSV,
         "LAB": cv2.COLOR_BGR2LAB,
         "YCrCb": cv2.COLOR_BGR2YCrCb,
         "XYZ": cv2.COLOR_BGR2XYZ,
-        "HSL": cv2.COLOR_BGR2HLS,
+        "HSL": cv2.COLOR_BGR2HLS,  # Note: OpenCV uses HLS, not HSL
         "YUV": cv2.COLOR_BGR2YUV,
     }
     
-    # Create reverse mappings
-    for src, code in list(color_space_map.items()):
-        if src != "BGR":
-            color_space_map[src + "_BGR"] = eval(f"cv2.COLOR_{src}2BGR")
+    # Map color space names to OpenCV constants (to BGR)
+    other_to_bgr = {
+        "RGB": cv2.COLOR_RGB2BGR,
+        "GRAY": cv2.COLOR_GRAY2BGR,
+        "HSV": cv2.COLOR_HSV2BGR,
+        "LAB": cv2.COLOR_LAB2BGR,
+        "YCrCb": cv2.COLOR_YCrCb2BGR,
+        "XYZ": cv2.COLOR_XYZ2BGR,
+        "HSL": cv2.COLOR_HLS2BGR,  # Note: OpenCV uses HLS, not HSL
+        "YUV": cv2.COLOR_YUV2BGR,
+    }
     
     # Determine the conversion code
-    conversion_key = f"{source_space}_{target_space}"
-    if conversion_key in color_space_map:
-        conversion_code = color_space_map[conversion_key]
-    else:
-        # Handle two-step conversion via BGR
-        src_to_bgr_key = f"{source_space}_BGR"
-        bgr_to_tgt_key = f"BGR_{target_space}"
-        
-        if src_to_bgr_key in color_space_map and bgr_to_tgt_key in color_space_map:
-            # First convert to BGR
-            img = cv2.cvtColor(img, color_space_map[src_to_bgr_key])
-            # Then convert from BGR to target
-            conversion_code = color_space_map[bgr_to_tgt_key]
+    # Case 1: Source is BGR (OpenCV default)
+    if source_space == "BGR":
+        if target_space == "BGR":
+            # No conversion needed
+            converted = img
+        elif target_space in bgr_to_other:
+            conversion_code = bgr_to_other[target_space]
+            converted = cv2.cvtColor(img, conversion_code)
         else:
-            raise ValueError(f"Unsupported color space conversion: {source_space} to {target_space}")
+            raise ValueError(f"Unsupported target color space: {target_space}")
     
-    # Perform the conversion
-    converted = cv2.cvtColor(img, conversion_code)
+    # Case 2: Target is BGR
+    elif target_space == "BGR":
+        if source_space in other_to_bgr:
+            conversion_code = other_to_bgr[source_space]
+            converted = cv2.cvtColor(img, conversion_code)
+        else:
+            raise ValueError(f"Unsupported source color space: {source_space}")
+    
+    # Case 3: Both are non-BGR - convert via BGR
+    else:
+        # First convert source to BGR
+        if source_space in other_to_bgr:
+            img = cv2.cvtColor(img, other_to_bgr[source_space])
+        else:
+            raise ValueError(f"Unsupported source color space: {source_space}")
+        
+        # Then convert from BGR to target
+        if target_space in bgr_to_other:
+            conversion_code = bgr_to_other[target_space]
+            converted = cv2.cvtColor(img, conversion_code)
+        else:
+            raise ValueError(f"Unsupported target color space: {target_space}")
     
     # For display purposes, convert back to BGR if not already in BGR
     display_img = converted
-    if target_space != "BGR" and f"{target_space}_BGR" in color_space_map:
-        display_img = cv2.cvtColor(converted, color_space_map[f"{target_space}_BGR"])
+    if target_space != "BGR" and target_space in other_to_bgr:
+        display_img = cv2.cvtColor(converted, other_to_bgr[target_space])
     
     # Save and encode to base64
     new_path, image_base64 = save_and_encode_image(display_img, image_path, f"convert_{source_space}_to_{target_space}")
