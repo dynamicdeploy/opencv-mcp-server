@@ -1075,31 +1075,31 @@ def detect_video_objects_tool(
                     idx = int(i)
                 
                 box = boxes[idx]
-                    x, y, w, h = box
-                    
-                    # Get class name and confidence
-                    class_id = class_ids[idx]
-                    class_name = classes[class_id] if class_id < len(classes) else f"Class {class_id}"
-                    confidence = confidences[idx]
-                    
-                    # Update detection counts
-                    detection_counts[class_name] = detection_counts.get(class_name, 0) + 1
-                    
-                    # Ensure coordinates are within frame bounds
-                    x = max(0, x)
-                    y = max(0, y)
-                    x_end = min(orig_w, x + w)
-                    y_end = min(orig_h, y + h)
-                    
-                    # Draw rectangle
-                    cv2.rectangle(frame_vis, (x, y), (x_end, y_end), color, thickness)
-                    
-                    # Add label
-                    if show_labels:
-                        text = f"{class_name}: {confidence:.2f}"
-                        y_text = y - 10 if y - 10 > 10 else y + 10
-                        cv2.putText(frame_vis, text, (x, y_text),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                x, y, w, h = box
+                
+                # Get class name and confidence
+                class_id = class_ids[idx]
+                class_name = classes[class_id] if class_id < len(classes) else f"Class {class_id}"
+                confidence = confidences[idx]
+                
+                # Update detection counts
+                detection_counts[class_name] = detection_counts.get(class_name, 0) + 1
+                
+                # Ensure coordinates are within frame bounds
+                x = max(0, x)
+                y = max(0, y)
+                x_end = min(orig_w, x + w)
+                y_end = min(orig_h, y + h)
+                
+                # Draw rectangle
+                cv2.rectangle(frame_vis, (x, y), (x_end, y_end), color, thickness)
+                
+                # Add label
+                if show_labels:
+                    text = f"{class_name}: {confidence:.2f}"
+                    y_text = y - 10 if y - 10 > 10 else y + 10
+                    cv2.putText(frame_vis, text, (x, y_text),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
             
             # Write frame to output video
             out.write(frame_vis)
@@ -1387,31 +1387,31 @@ def detect_camera_objects_tool(
                     idx = int(i)
                 
                 box = boxes[idx]
-                    x, y, w, h = box
-                    
-                    # Get class name and confidence
-                    class_id = class_ids[idx]
-                    class_name = classes[class_id] if class_id < len(classes) else f"Class {class_id}"
-                    confidence = confidences[idx]
-                    
-                    # Update detection counts
-                    detection_counts[class_name] = detection_counts.get(class_name, 0) + 1
-                    
-                    # Ensure coordinates are within frame bounds
-                    x = max(0, x)
-                    y = max(0, y)
-                    x_end = min(orig_w, x + w)
-                    y_end = min(orig_h, y + h)
-                    
-                    # Draw rectangle
-                    cv2.rectangle(frame_vis, (x, y), (x_end, y_end), color, thickness)
-                    
-                    # Add label
-                    if show_labels:
-                        text = f"{class_name}: {confidence:.2f}"
-                        y_text = y - 10 if y - 10 > 10 else y + 10
-                        cv2.putText(frame_vis, text, (x, y_text),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                x, y, w, h = box
+                
+                # Get class name and confidence
+                class_id = class_ids[idx]
+                class_name = classes[class_id] if class_id < len(classes) else f"Class {class_id}"
+                confidence = confidences[idx]
+                
+                # Update detection counts
+                detection_counts[class_name] = detection_counts.get(class_name, 0) + 1
+                
+                # Ensure coordinates are within frame bounds
+                x = max(0, x)
+                y = max(0, y)
+                x_end = min(orig_w, x + w)
+                y_end = min(orig_h, y + h)
+                
+                # Draw rectangle
+                cv2.rectangle(frame_vis, (x, y), (x_end, y_end), color, thickness)
+                
+                # Add label
+                if show_labels:
+                    text = f"{class_name}: {confidence:.2f}"
+                    y_text = y - 10 if y - 10 > 10 else y + 10
+                    cv2.putText(frame_vis, text, (x, y_text),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
             
             # Add recording information
             elapsed_time = time.time() - start_time
