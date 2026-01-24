@@ -4,7 +4,7 @@ FROM python:3.11-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies for OpenCV and wget for downloading models
+# Install system dependencies for OpenCV, fonts, and wget for downloading models
 RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     libsm6 \
@@ -14,7 +14,12 @@ RUN apt-get update && apt-get install -y \
     libgl1 \
     libgtk-3-0 \
     wget \
-    && rm -rf /var/lib/apt/lists/*
+    fontconfig \
+    libfontconfig1 \
+    libfreetype6 \
+    fonts-dejavu-core \
+    && rm -rf /var/lib/apt/lists/* \
+    && fc-cache -fv
 
 # Copy project files
 COPY pyproject.toml ./
