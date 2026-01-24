@@ -1,0 +1,31 @@
+{
+  "passed": [
+    "Tools available: 22",
+    "Image 1 - Stats: get_image_stats_tool",
+    "Image 1 - Resize: resize_image_tool",
+    "Image 1 - Edge Detection: detect_edges_tool",
+    "Image 1 - Face Detection: detect_faces_tool",
+    "Image 1 - Object Detection: detect_objects_tool",
+    "Image 2 - Stats: get_image_stats_tool",
+    "Image 2 - Resize: resize_image_tool",
+    "Image 2 - Edge Detection: detect_edges_tool",
+    "Image 2 - Face Detection: detect_faces_tool",
+    "Image 2 - Object Detection: detect_objects_tool",
+    "Image 3 - Stats: get_image_stats_tool",
+    "Image 3 - Resize: resize_image_tool",
+    "Image 3 - Edge Detection: detect_edges_tool",
+    "Image 3 - Face Detection: detect_faces_tool",
+    "Image 3 - Object Detection: detect_objects_tool"
+  ],
+  "failed": [
+    "Image 4 - Stats: [TextContent(type='text', text='Error executing tool get_image_stats_tool: Failed to save image to /app/public/GetStatisticalInformation_histogram_20260124_110024.png', annotations=None, meta=None)]",
+    "Image 4 - Resize: [TextContent(type='text', text='Error executing tool resize_image_tool: Failed to save image to /app/public/GetStatisticalInformation_resize_300x200_20260124_110024.png', annotations=None, meta=None)]",
+    "Image 4 - Edge Detection: [TextContent(type='text', text='Error executing tool detect_edges_tool: Failed to detect edges: Failed to save image to /app/public/GetStatisticalInformation_edges_canny_20260124_110024.png', annotations=None, meta=None)]",
+    "Image 5 - Stats: [TextContent(type='text', text='Error executing tool get_image_stats_tool: Failed to save image to /app/public/DetectFace_histogram_20260124_110025.png', annotations=None, meta=None)]",
+    "Image 5 - Resize: [TextContent(type='text', text='Error executing tool resize_image_tool: Failed to save image to /app/public/DetectFace_resize_300x200_20260124_110025.png', annotations=None, meta=None)]",
+    "Image 5 - Edge Detection: [TextContent(type='text', text='Error executing tool detect_edges_tool: Failed to detect edges: Failed to save image to /app/public/DetectFace_edges_canny_20260124_110025.png', annotations=None, meta=None)]",
+    "Image 5 - Face Detection: [TextContent(type='text', text='Error executing tool detect_faces_tool: Failed to detect faces: Failed to save image to /app/public/DetectFace_faces_haar_20260124_110025.png', annotations=None, meta=None)]"
+  ],
+  "skipped": [],
+  "details": {}
+}

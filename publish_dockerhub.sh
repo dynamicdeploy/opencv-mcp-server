@@ -3,17 +3,45 @@
 
 set -e  # Exit on error
 
-# Configuration
-IMAGE_NAME="opencv-mcp-server"
-VERSION=$(grep -E '^version = ' pyproject.toml | sed -E 's/version = "([^"]+)"/\1/')
-DOCKERHUB_USERNAME="${DOCKERHUB_USERNAME:-}"  # Set via environment variable or prompt
-NON_INTERACTIVE="${NON_INTERACTIVE:-false}"  # Set to true for CI/CD
-
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
+
+# Configuration
+IMAGE_NAME="opencv-mcp-server"
+VERSION=$(grep -E '^version = ' pyproject.toml | sed -E 's/version = "([^"]+)"/\1/')
+DOCKERHUB_USERNAME="${DOCKERHUB_USERNAME:-}"  # Set via environment variable or prompt
+NON_INTERACTIVE="${NON_INTERACTIVE:-false}"  # Set to true for CI/CD
+BUILD_IMAGE=false  # Default: don't build, assume image exists
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --build)
+            BUILD_IMAGE=true
+            shift
+            ;;
+        --help|-h)
+            echo "Usage: $0 [--build]"
+            echo ""
+            echo "Options:"
+            echo "  --build    Build the Docker image before publishing"
+            echo "  --help     Show this help message"
+            echo ""
+            echo "Environment variables:"
+            echo "  DOCKERHUB_USERNAME    Docker Hub username (required)"
+            echo "  NON_INTERACTIVE       Set to 'true' for CI/CD (default: false)"
+            exit 0
+            ;;
+        *)
+            echo -e "${RED}Unknown option: $1${NC}"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
+done
 
 echo "=========================================="
 echo "OpenCV MCP Server - Docker Hub Publisher"
@@ -73,10 +101,17 @@ echo ""
 # Confirm before proceeding (skip in non-interactive mode)
 if [ "$NON_INTERACTIVE" != "true" ]; then
     echo "This will:"
-    echo "  1. Build Docker image: ${IMAGE_NAME}:latest"
-    echo "  2. Tag as: ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest"
-    echo "  3. Tag as: ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${VERSION}"
-    echo "  4. Push both tags to Docker Hub"
+    if [ "$BUILD_IMAGE" = "true" ]; then
+        echo "  1. Build Docker image: ${IMAGE_NAME}:latest"
+        echo "  2. Tag as: ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest"
+        echo "  3. Tag as: ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${VERSION}"
+        echo "  4. Push both tags to Docker Hub"
+    else
+        echo "  1. Tag existing image: ${IMAGE_NAME}:latest"
+        echo "  2. Tag as: ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest"
+        echo "  3. Tag as: ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${VERSION}"
+        echo "  4. Push both tags to Docker Hub"
+    fi
     echo ""
     read -p "Continue? (y/n) " -n 1 -r
     echo
@@ -86,21 +121,49 @@ if [ "$NON_INTERACTIVE" != "true" ]; then
     fi
 fi
 
-# Build the image
-echo ""
-echo -e "${GREEN}[1/4] Building Docker image...${NC}"
-docker build -t ${IMAGE_NAME}:latest .
-
-if [ $? -ne 0 ]; then
-    echo -e "${RED}ERROR: Docker build failed${NC}"
-    exit 1
+# Build the image if --build flag is set
+if [ "$BUILD_IMAGE" = "true" ]; then
+    echo ""
+    echo -e "${GREEN}[1/4] Building Docker image...${NC}"
+    
+    # Check if build.sh exists and use it, otherwise build directly
+    if [ -f "build.sh" ]; then
+        echo "Using build.sh script..."
+        bash build.sh
+        if [ $? -ne 0 ]; then
+            echo -e "${RED}ERROR: Build script failed${NC}"
+            exit 1
+        fi
+    else
+        docker build -t ${IMAGE_NAME}:latest .
+        if [ $? -ne 0 ]; then
+            echo -e "${RED}ERROR: Docker build failed${NC}"
+            exit 1
+        fi
+        echo -e "${GREEN}✓ Build successful${NC}"
+    fi
+else
+    # Check if image exists
+    if ! docker image inspect ${IMAGE_NAME}:latest > /dev/null 2>&1; then
+        echo -e "${RED}ERROR: Image ${IMAGE_NAME}:latest not found${NC}"
+        echo "Please build the image first with:"
+        echo "  ./build.sh"
+        echo "  OR"
+        echo "  $0 --build"
+        exit 1
+    fi
+    echo ""
+    echo -e "${GREEN}[1/4] Using existing image: ${IMAGE_NAME}:latest${NC}"
+    echo -e "${GREEN}✓ Image found${NC}"
 fi
-
-echo -e "${GREEN}✓ Build successful${NC}"
 
 # Tag for Docker Hub
 echo ""
-echo -e "${GREEN}[2/4] Tagging images...${NC}"
+if [ "$BUILD_IMAGE" = "true" ]; then
+    echo -e "${GREEN}[2/4] Tagging images...${NC}"
+else
+    echo -e "${GREEN}[1/3] Tagging images...${NC}"
+fi
 
 # Tag as latest
 docker tag ${IMAGE_NAME}:latest ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest
@@ -118,7 +181,11 @@ fi
 
 # Push to Docker Hub
 echo ""
-echo -e "${GREEN}[3/4] Pushing images to Docker Hub...${NC}"
+if [ "$BUILD_IMAGE" = "true" ]; then
+    echo -e "${GREEN}[3/4] Pushing images to Docker Hub...${NC}"
+else
+    echo -e "${GREEN}[2/3] Pushing images to Docker Hub...${NC}"
+fi
 
 # Push latest
 echo "Pushing ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest..."
@@ -151,7 +218,11 @@ fi
 
 # Summary
 echo ""
-echo -e "${GREEN}[4/4] Summary${NC}"
+if [ "$BUILD_IMAGE" = "true" ]; then
+    echo -e "${GREEN}[4/4] Summary${NC}"
+else
+    echo -e "${GREEN}[3/3] Summary${NC}"
+fi
 echo "=========================================="
 echo -e "${GREEN}✓ Successfully published to Docker Hub!${NC}"
 echo ""
